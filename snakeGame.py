@@ -13,9 +13,6 @@ snake_dir = (0, 0)
 time, time_step = 0, 110
 food = snake.copy()
 food.center = get_random_pos()
-mine = snake.copy()
-mine_amt = 10
-mine.center = get_random_pos()
 screen = pg.display.set_mode([WINDOW] * 2)
 clock = pg.time.Clock()
 dirs = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
@@ -45,8 +42,8 @@ while True:
         screen.fill('black')
         #check border
         self_eating = pg.Rect.collidelist(snake, segments[:-1]) != -1
-        if snake.left < 0 or snake.right > WINDOW or snake.top < 0 or snake.bottom > WINDOW or self_eating or snake.center == mine.center:
-            snake.center, food.center, mine.center = get_random_pos(), get_random_pos(), get_random_pos()
+        if snake.left < 0 or snake.right > WINDOW or snake.top < 0 or snake.bottom > WINDOW or self_eating:
+            snake.center, food.center, get_random_pos(), get_random_pos()
             length, snake_dir = 1, (0, 0)
             segments = [snake.copy()]
         #check food
@@ -57,8 +54,6 @@ while True:
         pg.draw.rect(screen, 'red', food)
         #draw snake
         [pg.draw.rect(screen, 'green', segment) for segment in segments]
-
-        pg.draw.circle(screen, 'white', mine.center, 20)
         #move snake
         time_now = pg.time.get_ticks()
         if time_now - time > time_step:
